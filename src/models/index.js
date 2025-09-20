@@ -1,13 +1,33 @@
 const { sequelize } = require("../config/db");
-const defineUserModel = require("./user");
+const { Sequelize, DataTypes } = require("sequelize");
+
+const db = {};
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
 
 // Initialize models
-const User = defineUserModel(sequelize);
+db.User = require("./user")(sequelize, DataTypes);
+db.Streak = require("./streak")(sequelize, DataTypes);
 
-// Add models to db object
-const db = {
-  sequelize,
-  User,
-};
+// Define associations
+db.Streak.belongsTo(db.User, {
+  foreignKey: "userId",
+  as: "user",
+});
+
+db.User.hasOne(db.Streak, {
+  foreignKey: "userId",
+  as: "streaks",
+});
+
+// Sync database
+db.sequelize
+  .sync({ force: false, alter: true })
+  .then(() => {
+    console.log("Database synchronized successfully");
+  })
+  .catch((error) => {
+    console.error("Error syncing database:", error);
+  });
 
 module.exports = db;

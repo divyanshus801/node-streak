@@ -7,8 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
-        primaryKey: true,
-        primaryKey: true,
+        primaryKey: true
       },
       userId: {
         type: UUID,
@@ -28,13 +27,22 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATEONLY,
         allowNull: true,
       },
+      lastActivityType: {
+        type: DataTypes.ENUM('video', 'test'),
+        allowNull: true,
+      },
       streakStartDate: {
         type: DataTypes.DATEONLY,
         allowNull: true,
       },
       streakGoal: {
         type: DataTypes.INTEGER,
-        defaultValue: 7, // Default 7-day streak goal
+        defaultValue: 7,
+        allowNull: false,
+      },
+      todayActivityDone: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
         allowNull: false,
       },
     },
