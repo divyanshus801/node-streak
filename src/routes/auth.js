@@ -1,10 +1,16 @@
-const express = require('express');
-const { register, login } = require('../controllers/auth');
+const express = require("express");
+const {
+  sendOtp,
+  verifyOtp,
+  updateUserDetails,
+} = require("../controllers/auth");
+const { isUserLoggedIn } = require("../middleware/auth");
 
 const router = express.Router();
 
-// Auth routes
-router.post('/register', register);
-router.post('/login', login);
+//otp routes
+router.post("/send-otp", sendOtp);
+router.post("/verify-otp", verifyOtp);
+router.patch("/update-profile", isUserLoggedIn, updateUserDetails);
 
 module.exports = router;

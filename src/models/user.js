@@ -1,52 +1,63 @@
-const { Model, DataTypes } = require('sequelize');
-const bcrypt = require('bcryptjs');
-
-class User extends Model {}
+const { Model, DataTypes } = require("sequelize");
+const bcrypt = require("bcryptjs");
 
 module.exports = (sequelize) => {
-  User.init(
+  const User = sequelize.define(
+    "User",
     {
       id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       email: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true,
         validate: {
           isEmail: true,
         },
       },
+      phone: {
+        type: DataTypes.STRING,
+        // allowNull: false,
+        unique: true,
+      },
       password: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
+      },
+      role: {
+        type: DataTypes.ENUM("user", "admin"),
+        defaultValue: "user",
       },
       timeZone: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: 'UTC',
+        defaultValue: "UTC",
       },
     },
     {
       sequelize,
-      modelName: 'User',
+      modelName: "User",
       timestamps: true,
-      hooks: {
-        beforeCreate: async (user) => {
-          if (user.password) {
-            const salt = await bcrypt.genSalt(10);
-            user.password = await bcrypt.hash(user.password, salt);
-          }
-        },
-      },
     }
   );
 
   // Instance method to validate password
   User.prototype.validatePassword = async function (password) {
     return await bcrypt.compare(password, this.password);
+  };
+
+  User.associate = (models) => {
+    User.hasMany(models.userOtp, {
+      foriegnKey: "userId",
+      as: "userOtps",
+    });
   };
 
   return User;

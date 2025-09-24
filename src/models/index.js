@@ -8,6 +8,7 @@ db.sequelize = sequelize;
 // Initialize models
 db.User = require("./user")(sequelize, DataTypes);
 db.Streak = require("./streak")(sequelize, DataTypes);
+db.UserOtp = require("./otp")(sequelize, DataTypes);
 
 // Define associations
 db.Streak.belongsTo(db.User, {
