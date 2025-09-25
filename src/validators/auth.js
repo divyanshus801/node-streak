@@ -21,6 +21,7 @@ const verifyOtpSchema = Joi.object({
       "any.required": "Phone is required",
     }),
   otp: Joi.string().min(6).max(6).required(),
+  role: Joi.string(),
 });
 
 const validateCreateUser = (data) => {

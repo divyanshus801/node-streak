@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 const isUserLoggedIn = async (req, res, next) => {
   const authHeader = req.headers["authorization"];
@@ -19,4 +19,18 @@ const isUserLoggedIn = async (req, res, next) => {
   }
 };
 
-module.exports = { isUserLoggedIn };
+const isAdmin = async (req, res, next) => {
+  try {
+    const userData = req.user;
+    if (userData?.role !== "admin") {
+      return res.status(403).json({
+        message: "Access Denied!",
+      });
+    }
+    next();
+  } catch (err) {
+    return res.status(403).json({ message: "Access Denied" });
+  }
+};
+
+module.exports = { isUserLoggedIn, isAdmin };

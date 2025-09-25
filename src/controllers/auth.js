@@ -38,7 +38,7 @@ const sendOtp = async (req, res) => {
 
 const verifyOtp = async (req, res) => {
   try {
-    const { phone, otp } = req.body;
+    const { phone, otp, role } = req.body;
     const validatorRes = validateVerifyOtp(req.body);
     if (validatorRes.error) {
       return res.status(400).json({
@@ -75,6 +75,7 @@ const verifyOtp = async (req, res) => {
       userRecord = await User.create({
         phone: phone,
         isPhoneVerified: true,
+        role: role ? role : "user"
       });
     } else {
       if (!userRecord?.isPhoneVerified) {
@@ -83,7 +84,7 @@ const verifyOtp = async (req, res) => {
       }
     }
 
-    const token = jwt.sign({ id: userRecord.id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: userRecord.id, role: userRecord.role }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
 
