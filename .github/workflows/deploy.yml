@@ -3,12 +3,12 @@ name: Node.js CI/CD
 on:
   push:
     branches:
-      - master   # Trigger only when pushing to master
+      - master
   pull_request:
 
 jobs:
   build-and-deploy:
-    runs-on: self-hosted   # runs inside your EC2 runner
+    runs-on: self-hosted
 
     steps:
       # 1. Checkout the repo
@@ -19,19 +19,21 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'   # match your Node version
+          node-version: '22'
 
       # 3. Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # 4. Run tests (skip real tests for now)
+      # 4. Run tests (optional placeholder)
       - name: Run tests
         run: echo "No tests yet"
 
       # 5. Restart app with PM2
       - name: Restart PM2 app
         run: |
+          APP_PATH="$PWD/src/server.js"
+          echo "Starting app from: $APP_PATH"
           pm2 delete node-streak || true
-          pm2 start server.js --name node-streak
+          pm2 start $APP_PATH --name node-streak
           pm2 save
