@@ -35,7 +35,7 @@ const startServer = async () => {
     // Start server
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
-      // startConsumer()
+      startConsumer()
     });
   } catch (error) {
     console.error("Failed to start server:", error);
