@@ -21,7 +21,7 @@ app.use("/api/streak", streakRoutes);
 app.use("/api/question", questionBank);
 
 // Health check route
-app.get("/health2", (req, res) => {
+app.get("/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
