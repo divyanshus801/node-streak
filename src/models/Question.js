@@ -8,17 +8,26 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
         defaultValue: UUIDV4,
-        primaryKey: true
+        primaryKey: true,
       },
       questionBankId: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-            model: "QuestionBanks",
-            key: "id"
+          model: "QuestionBanks",
+          key: "id",
         },
-        onDelete: 'CASCADE'
-      }, 
+        onDelete: "CASCADE",
+      },
+      jobId: {
+        type: DataTypes.UUID,
+        allowNull: true,
+        references: {
+          model: "UploadJobs",
+          key: "id",
+        },
+        onDelete: "SET NULL",
+      },
       questionText: {
         type: DataTypes.TEXT,
         allowNull: false,
@@ -45,7 +54,11 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      indexes: [{fields: ["id"]}, {fields: ["createdBy"]}, {fields: ["tags"]}],
+      indexes: [
+        { fields: ["id"] },
+        { fields: ["createdBy"] },
+        { fields: ["tags"] },
+      ],
       timeStamps: true,
     }
   );

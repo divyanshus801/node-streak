@@ -11,6 +11,7 @@ db.Streak = require("./streak")(sequelize, DataTypes);
 db.UserOtp = require("./otp")(sequelize, DataTypes);
 db.QuestionBank = require("./QuestionBank")(sequelize, DataTypes);
 db.Question = require("./Question")(sequelize, DataTypes);
+db.UploadJob = require("./UploadJob")(sequelize, DataTypes);
 
 // Define associations
 db.Streak.belongsTo(db.User, {
@@ -32,6 +33,18 @@ db.Question.belongsTo(db.QuestionBank, {
   foreignKey: "questionBankId",
   as: "questionBank",
 });
+
+db.UploadJob.hasMany(db.Question, {
+  foreignKey: "jobId",
+  as: "questions",
+  onDelete: "SET NULL",
+});
+
+db.Question.belongsTo(db.UploadJob, {
+  foreignKey: "jobId",
+  as: "UploadJob",
+
+})
 
 // Sync database
 db.sequelize

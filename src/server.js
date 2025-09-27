@@ -7,6 +7,7 @@ const { connectDB } = require("./config/db");
 const authRoutes = require("./routes/auth");
 const streakRoutes = require("./routes/streak");
 const questionBank = require("./routes/question");
+const { startConsumer } = require("./controllers/consumer");
 
 const app = express();
 
@@ -34,6 +35,7 @@ const startServer = async () => {
     // Start server
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
+      startConsumer()
     });
   } catch (error) {
     console.error("Failed to start server:", error);
