@@ -25,11 +25,15 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # 4. Run tests (optional placeholder)
+      # 4. Copy .env from your EC2 folder to the current workflow directory
+      - name: Copy .env
+        run: cp /home/ec2-user/node-streak/.env $PWD/.env
+
+      # 5. Run tests (optional placeholder)
       - name: Run tests
         run: echo "No tests yet"
 
-      # 5. Restart app with PM2
+      # 6. Restart app with PM2
       - name: Restart PM2 app
         run: |
           APP_PATH="$PWD/src/server.js"
